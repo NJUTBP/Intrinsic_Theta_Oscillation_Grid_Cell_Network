@@ -322,7 +322,7 @@ def main():
     #### analysis ####
     #### calculating the firing profile and population vector ####
     ProfE=np.zeros(NE)
-    PVs=np.array([[0,180]])
+    PVs=np.array([[0,180,0]])
     TW=np.array([[0,180]])
     v=0
     h=0
@@ -336,14 +336,15 @@ def main():
             v-=np.cos(np.pi*2*TW[0,1]/180.0)
             h-=np.sin(np.pi*2*TW[0,1]/180.0)
             TW=np.delete(TW,0,0)
-        PV=180.0*np.arctan2(h,v)/np.pi
+        PVA=180.0*np.arctan2(h,v)/np.pi
+        PVL=np.sqrt(v**2+h**2)/0.4
         if h<0:
-            PV+=360.0
-        PVs=np.append(PVs,[[t,PV]],axis=0)
+            PVA+=360.0
+        PVs=np.append(PVs,[[t,PVA,PVL]],axis=0)
     ProfE/=1
 
     #### save initial recordings ####
-    np.savez_compressed(SavePath+'/PVs_'+str(TrialID)+'.npz',PVs)
+    np.savez_compressed(SavePath+'/PVALs_'+str(TrialID)+'.npz',PVs)
     np.savez_compressed(SavePath+'/Profile_'+str(TrialID)+'.npz',ProfE)
     np.savez_compressed(SavePath+'/SpikeTimeE_'+str(TrialID)+'.npz',SpikeTimeE)
     np.savez_compressed(SavePath+'/SpikeTimeI_'+str(TrialID)+'.npz',SpikeTimeI)
